@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LocalQR: placas QR para comercios y miniwebs multilink personalizadas. Tu negocio, más conectado.">
+  <meta name="theme-color" content="#0755ff">
+  <title>LocalQR | Tu negocio, más conectado</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #0755ff;
+      --blue-dark: #0344d6;
+      --ink: #090b10;
+      --muted: #697181;
+      --line: #e7eaf0;
+      --soft: #f5f7fb;
+      --white: #fff;
+      --radius: 24px;
+      --shadow: 0 22px 70px rgba(9, 20, 50, .10);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--white); font-family: "DM Sans", Arial, sans-serif; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    .container { width: min(1160px, calc(100% - 44px)); margin: 0 auto; }
+    .topbar { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.92); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(231,234,240,.85); }
+    .nav { height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand img { width: 172px; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 30px; font-size: 14px; font-weight: 700; color: #424957; }
+    .nav-links a:hover { color: var(--blue); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1px solid transparent; font-weight: 800; font-size: 14px; transition: transform .22s ease, box-shadow .22s ease, background .22s ease; cursor: pointer; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary { background: var(--blue); color: #fff; box-shadow: 0 12px 28px rgba(7,85,255,.22); }
+    .btn-primary:hover { background: var(--blue-dark); box-shadow: 0 16px 34px rgba(7,85,255,.3); }
+    .btn-dark { background: var(--ink); color: #fff; }
+    .btn-outline { border-color: #dfe4ed; background: #fff; color: var(--ink); }
+    .menu-toggle { display: none; background: none; border: 0; font-size: 27px; cursor: pointer; }
+    .hero { position: relative; overflow: hidden; padding: 104px 0 92px; background: radial-gradient(circle at 82% 35%, rgba(7,85,255,.10), transparent 29%), linear-gradient(180deg,#fff 0%,#f8faff 100%); }
+    .hero:before { content:""; position:absolute; width:500px; height:500px; border:1px solid rgba(7,85,255,.10); border-radius:50%; right:-190px; top:-230px; box-shadow:0 0 0 55px rgba(7,85,255,.025),0 0 0 110px rgba(7,85,255,.018); }
+    .hero-grid { position:relative; display:grid; grid-template-columns: 1.05fr .95fr; align-items:center; gap:55px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:9px; padding:8px 13px; border-radius:99px; background:#edf3ff; color:var(--blue); font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+    .eyebrow i { width:7px; height:7px; border-radius:50%; background:var(--blue); display:inline-block; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:660px; margin:22px 0; font-family:"Space Grotesk",sans-serif; font-size:clamp(46px,6vw,76px); line-height:1.02; letter-spacing:-.065em; }
+    h1 span { color:var(--blue); }
+    .hero-copy { max-width:570px; color:#606a7a; font-size:18px; line-height:1.75; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; }
+    .micro { margin-top:22px; color:#818a98; font-size:12px; font-weight:600; }
+    .hero-visual { position:relative; min-height:440px; display:grid; place-items:center; }
+    .halo { position:absolute; width:390px; height:390px; border-radius:50%; background:linear-gradient(135deg,#eaf1ff,#f7faff); }
+    .plate { position:relative; width:min(360px,85%); aspect-ratio: .78; border-radius:30px; padding:22px; background:linear-gradient(145deg,#fff,#f5f7fb); border:1px solid #e5eaf3; box-shadow:0 32px 80px rgba(15,36,80,.18); transform:rotate(-5deg); }
+    .plate-inner { height:100%; border:1px solid #e8edf6; border-radius:19px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; background:#fff; }
+    .plate-mark { width:60px; height:60px; display:grid; place-items:center; border-radius:18px; background:var(--blue); color:#fff; font-family:"Space Grotesk"; font-size:28px; font-weight:700; }
+    .plate-inner strong { margin:15px 0 3px; font-family:"Space Grotesk"; font-size:23px; }
+    .plate-inner small { color:#858d9b; font-size:11px; }
+    .fake-qr { display:grid; grid-template-columns:repeat(9,1fr); gap:3px; width:145px; height:145px; padding:9px; margin:18px 0; border:1px solid #e9edf4; border-radius:13px; background:#fff; }
+    .fake-qr i { background:#10141c; border-radius:2px; }
+    .fake-qr i:nth-child(3n),.fake-qr i:nth-child(7n),.fake-qr i:nth-child(11n) { background:var(--blue); }
+    .fake-qr i:nth-child(1),.fake-qr i:nth-child(2),.fake-qr i:nth-child(10),.fake-qr i:nth-child(11),.fake-qr i:nth-child(19),.fake-qr i:nth-child(20),.fake-qr i:nth-child(8),.fake-qr i:nth-child(9),.fake-qr i:nth-child(17),.fake-qr i:nth-child(18),.fake-qr i:nth-child(26),.fake-qr i:nth-child(27) { background:#10141c; }
+    .scan-pill { position:absolute; right:-12px; bottom:52px; background:#fff; border:1px solid #e8edf5; border-radius:16px; padding:13px 17px; box-shadow:var(--shadow); font-size:12px; font-weight:800; }
+    .scan-pill span { display:block; color:var(--blue); font-size:10px; letter-spacing:.1em; }
+    .trust { padding:26px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+    .trust-row { display:flex; justify-content:center; flex-wrap:wrap; gap:18px 55px; color:#667080; font-size:13px; font-weight:700; }
+    .trust-row span:before { content:"✓"; color:var(--blue); font-weight:900; margin-right:9px; }
+    section { padding:100px 0; }
+    .section-head { max-width:720px; margin:0 auto 48px; text-align:center; }
+    .section-head h2 { margin:16px 0; font-family:"Space Grotesk"; font-size:clamp(34px,4.4vw,52px); line-height:1.08; letter-spacing:-.05em; }
+    .section-head p { color:var(--muted); font-size:16px; }
+    .products { background:var(--soft); }
+    .product-grid { display:grid; grid-template-columns:1fr 1fr; gap:22px; align-items:stretch; }
+    .product-card { position:relative; overflow:hidden; min-height:550px; padding:34px; border:1px solid #e8ebf2; border-radius:28px; background:#fff; box-shadow:0 8px 30px rgba(15,30,60,.04); transition:transform .25s ease,box-shadow .25s ease; }
+    .product-card:hover { transform:translateY(-8px); box-shadow:var(--shadow); }
+    .product-card.featured { background:var(--ink); color:#fff; border-color:var(--ink); }
+    .product-card h3 { margin:16px 0 10px; font-family:"Space Grotesk"; font-size:31px; letter-spacing:-.04em; }
+    .product-card p { color:#697181; }
+    .product-card.featured p { color:#aab2c0; }
+    .tag { display:inline-block; padding:7px 11px; border-radius:99px; background:#edf3ff; color:var(--blue); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
+    .featured .tag { background:rgba(7,85,255,.18); color:#8fb1ff; }
+    .product-art { height:205px; display:flex; align-items:center; justify-content:center; margin:20px 0 23px; border-radius:20px; background:linear-gradient(135deg,#f2f6ff,#e9effa); }
+    .featured .product-art { background:linear-gradient(135deg,#171d2a,#10141d); }
+    .mini-plate { width:145px; height:172px; padding:10px; background:#fff; border:1px solid #dce2ec; border-radius:15px; box-shadow:0 15px 35px rgba(0,0,0,.16); transform:rotate(5deg); }
+    .mini-plate .fake-qr { width:100%; height:105px; margin:5px 0; gap:2px; padding:6px; }
+    .mini-plate b { display:block; text-align:center; font-size:10px; color:#111; }
+    .phone { width:115px; height:190px; border:6px solid #222a39; border-radius:23px; background:#fff; padding:13px 8px; box-shadow:0 15px 35px rgba(0,0,0,.22); transform:rotate(-5deg); }
+    .phone .screen-logo { width:27px;height:27px;border-radius:9px;background:var(--blue);margin:0 auto 9px; }
+    .phone .line { height:6px; width:65%; margin:5px auto; border-radius:9px; background:#e8edf5; }
+    .phone .link { height:17px; margin:7px 0; border-radius:6px; background:#edf3ff; border:1px solid #dbe6ff; }
+    .feature-list { display:grid; gap:10px; margin:22px 0 27px; padding:0; list-style:none; color:#525c6b; font-size:14px; }
+    .featured .feature-list { color:#d3d8e1; }
+    .feature-list li:before { content:"✓"; color:var(--blue); font-weight:900; margin-right:10px; }
+    .featured .feature-list li:before { color:#7da5ff; }
+    .product-card .btn { width:100%; }
+    .steps-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .step { padding:28px; border:1px solid var(--line); border-radius:22px; }
+    .step-num { width:44px;height:44px;display:grid;place-items:center;border-radius:14px;background:#edf3ff;color:var(--blue);font-family:"Space Grotesk";font-weight:700; }
+    .step h3 { margin:20px 0 8px; font-family:"Space Grotesk"; font-size:21px; }
+    .step p { margin:0; color:var(--muted); font-size:14px; }
+    .benefits { background:var(--ink); color:#fff; }
+    .benefits-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:70px; align-items:center; }
+    .benefits h2 { margin:16px 0; font-family:"Space Grotesk"; font-size:clamp(36px,4.4vw,54px); line-height:1.08; letter-spacing:-.05em; }
+    .benefits-copy { color:#aab2c0; }
+    .benefit-list { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .benefit { padding:22px; border:1px solid #282e3a; border-radius:18px; background:#111722; }
+    .benefit b { display:block; margin-bottom:7px; }
+    .benefit span { color:#9da7b7; font-size:13px; }
+    .benefit-icon { color:#8fb1ff; font-size:22px; margin-bottom:10px; }
+    .showcase { background:#f6f8fc; }
+    .showcase-box { display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center; padding:38px; border-radius:30px; background:#fff; border:1px solid var(--line); }
+    .showcase-box h2 { font-family:"Space Grotesk"; font-size:40px; line-height:1.1; letter-spacing:-.05em; }
+    .showcase-box p { color:var(--muted); }
+    .showcase-preview { min-height:330px; display:grid; place-items:center; border-radius:22px; background:radial-gradient(circle,#e7efff,#f7f9fd 70%); }
+    .preview-card { width:210px; padding:20px; border-radius:22px; background:#fff; box-shadow:var(--shadow); text-align:center; }
+    .preview-card .screen-logo { width:48px;height:48px;border-radius:15px;background:var(--blue);margin:0 auto 12px; }
+    .preview-card strong { display:block; }
+    .preview-card small { color:#8992a0; }
+    .preview-link { padding:10px; margin-top:9px; border-radius:10px; background:#f0f4fb; font-size:11px; font-weight:700; }
+    .faq-list { max-width:800px; margin:auto; }
+    details { border-bottom:1px solid var(--line); padding:21px 0; }
+    summary { display:flex; justify-content:space-between; gap:20px; cursor:pointer; font-weight:800; list-style:none; }
+    summary::-webkit-details-marker { display:none; }
+    summary:after { content:"+"; color:var(--blue); font-size:22px; line-height:1; }
+    details[open] summary:after { content:"−"; }
+    details p { margin:14px 30px 0 0; color:var(--muted); font-size:14px; }
+    .cta { padding:78px 0; background:var(--blue); color:#fff; text-align:center; }
+    .cta h2 { max-width:760px; margin:0 auto 16px; font-family:"Space Grotesk"; font-size:clamp(36px,5vw,58px); line-height:1.05; letter-spacing:-.05em; }
+    .cta p { max-width:590px; margin:0 auto 28px; color:#dce7ff; }
+    .cta .btn { background:#fff; color:var(--blue); }
+    footer { padding:38px 0; background:#080a0e; color:#fff; }
+    .footer-row { display:flex; justify-content:space-between; align-items:center; gap:25px; }
+    .footer-logo { width:145px; filter:brightness(0) invert(1); }
+    .footer-note { color:#8e97a5; font-size:12px; }
+    .footer-links { display:flex; gap:20px; color:#c3cad4; font-size:13px; }
+    @media (max-width:850px) {
+      .nav-links { display:none; position:absolute; top:81px; left:0; right:0; padding:22px; background:#fff; border-bottom:1px solid var(--line); flex-direction:column; gap:18px; }
+      .nav-links.open { display:flex; }
+      .menu-toggle { display:block; }
+      .nav > .btn { display:none; }
+      .hero { padding:72px 0 55px; }
+      .hero-grid,.benefits-grid,.showcase-box { grid-template-columns:1fr; }
+      .hero-grid { gap:20px; }
+      .hero-visual { min-height:370px; }
+      .benefits-grid { gap:35px; }
+      .showcase-box { gap:25px; }
+    }
+    @media (max-width:650px) {
+      .container { width:min(100% - 32px,1160px); }
+      .nav { height:70px; }
+      .brand img { width:145px; }
+      .nav-links { top:69px; }
+      section { padding:72px 0; }
+      .hero { padding-top:58px; }
+      h1 { font-size:clamp(43px,13vw,62px); }
+      .hero-copy { font-size:16px; }
+      .hero-actions { flex-direction:column; }
+      .hero-actions .btn { width:100%; }
+      .hero-visual { min-height:330px; }
+      .halo { width:290px;height:290px; }
+      .plate { width:245px; }
+      .scan-pill { right:0; bottom:24px; }
+      .trust-row { justify-content:flex-start; gap:12px 25px; }
+      .product-grid,.steps-grid { grid-template-columns:1fr; }
+      .product-card { min-height:0; padding:25px; }
+      .product-card h3 { font-size:27px; }
+      .benefit-list { grid-template-columns:1fr; }
+      .showcase-box { padding:24px; }
+      .showcase-box h2 { font-size:34px; }
+      .footer-row { flex-direction:column; text-align:center; }
+      .footer-links { flex-wrap:wrap; justify-content:center; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior:auto; }
+      *,*::before,*::after { transition:none !important; }
+    }
+.hero-product-image {
+  width: 100%;
+  max-width: 540px;
+  max-height: 520px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 2;
+  border-radius: 25px;
+  filter: drop-shadow(0 25px 35px rgba(0, 30, 100, 0.18));
+  overflow: hidden;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 850px) {
+  .hero-product-image {
+    max-width: 390px;
+    max-height: 390px;
+    border-radius: 25px;
+  }
+}
+  </style>
+</head>
+<body>
+  <!--
+    LOCALQR - SITIO INSTITUCIONAL
+    Para personalizar:
+    1) Reemplazá los enlaces de WhatsApp e Instagram en este archivo.
+    2) Guardá el logo horizontal en assets/logo-localqr.png.
+    3) Editá textos, precios y datos de contacto cuando estén definidos.
+    4) La web es estática: funciona en GitHub Pages sin servidor ni base de datos.
+  -->
+  <header class="topbar">
+    <div class="container nav">
+      <a class="brand" href="#inicio" aria-label="LocalQR, inicio"><img src="assets/logo-localqr.png" alt="LocalQR - Tu negocio, más conectado"></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#productos">Productos</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <a class="btn btn-primary" href="https://wa.me/5492646107820?text=Hola%20LocalQR%2C%20quiero%20informaci%C3%B3n" target="_blank" rel="noopener">Quiero mi placa <span>↗</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow"><i></i> Soluciones QR para comercios</span>
+          <h1>Tu negocio,<br>más <span>conectado.</span></h1>
+          <p class="hero-copy">Convertí un simple escaneo en una nueva forma de conectar con tus clientes. Placas QR para comercios y miniwebs personalizadas para tener toda tu información en un solo lugar.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#productos">Conocé las placas <span>→</span></a>
+            <a class="btn btn-outline" href="https://wa.me/5492646107820?text=Hola%20LocalQR%2C%20quiero%20hacer%20una%20consulta" target="_blank" rel="noopener">Hablemos por WhatsApp</a>
+          </div>
+          <div class="micro">Fácil de usar · Sin aplicaciones · Ideal para tu local</div>
+        </div>
+ <div class="hero-visual">
+    <img 
+        src="assets/placa-localqr.png"
+        alt="Placa QR de LocalQR"
+        class="hero-product-image"
+    >
+</div>
+      </div>
+    </section>
+
+    <div class="trust">
+      <div class="container trust-row">
+        <span>Para todo tipo de comercios</span>
+        <span>Escaneo simple y rápido</span>
+        <span>Diseño personalizado</span>
+        <span>Atención cercana</span>
+      </div>
+    </div>
+
+    <section class="products" id="productos">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow"><i></i> Conocé LocalQR</span>
+          <h2>Dos soluciones.<br>Una forma más simple de conectar.</h2>
+          <p>Elegí la opción que mejor se adapte a tu comercio. Te ayudamos a poner tu negocio al alcance de un escaneo.</p>
+        </div>
+        <div class="product-grid">
+          <article class="product-card">
+            <span class="tag">Compra única</span>
+            <h3>Placa QR</h3>
+            <p>Un código QR que dirige a tus clientes directamente al destino que elijas: WhatsApp, Instagram, reseñas, menú, catálogo o tu sitio web.</p>
+            <div class="product-art">
+              <div class="mini-plate">
+                <b>ESCANEÁ AQUÍ</b>
+                <div class="fake-qr" aria-hidden="true">
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                </div>
+                <b>LOCALQR</b>
+              </div>
+            </div>
+            <ul class="feature-list">
+              <li>Un solo QR, un destino directo</li>
+              <li>Ideal para una acción concreta</li>
+              <li>Placa lista para colocar en tu local</li>
+              <li>Personalizada para tu comercio</li>
+            </ul>
+            <a class="btn btn-dark" href="https://wa.me/5492646107820?text=Hola%20LocalQR%2C%20quiero%20consultar%20por%20la%20Placa%20QR" target="_blank" rel="noopener">Consultar por la placa <span>↗</span></a>
+          </article>
+
+          <article class="product-card featured">
+            <span class="tag">Servicio mensual</span>
+            <h3>Placa Multilink</h3>
+            <p>Un QR que abre una miniweb exclusiva de tu negocio, con todos tus enlaces e información reunidos en una sola página personalizada.</p>
+            <div class="product-art">
+              <div class="phone">
+                <div class="screen-logo"></div>
+                <div class="line"></div><div class="line" style="width:42%"></div>
+                <div class="link"></div><div class="link"></div><div class="link"></div><div class="link"></div><div class="link"></div>
+              </div>
+            </div>
+            <ul class="feature-list">
+              <li>Miniweb personalizada con tu identidad</li>
+              <li>WhatsApp, redes, catálogo y ubicación</li>
+              <li>Información de tu comercio en un solo lugar</li>
+              <li>Servicio con abono mensual</li>
+            </ul>
+            <a class="btn btn-primary" href="https://wa.me/5492646107820?text=Hola%20LocalQR%2C%20quiero%20consultar%20por%20la%20Placa%20Multilink" target="_blank" rel="noopener">Consultar por Multilink <span>↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow"><i></i> Simple para vos y tus clientes</span>
+          <h2>De tu mostrador<br>a la pantalla del cliente.</h2>
+          <p>Una experiencia directa: no hace falta descargar aplicaciones ni aprender a usar herramientas complicadas.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="step"><div class="step-num">01</div><h3>Elegís tu solución</h3><p>Contanos qué necesitás que tus clientes encuentren al escanear tu placa.</p></article>
+          <article class="step"><div class="step-num">02</div><h3>La personalizamos</h3><p>Preparamos la placa QR o tu miniweb Multilink con la información de tu comercio.</p></article>
+          <article class="step"><div class="step-num">03</div><h3>Conectás con un escaneo</h3><p>Colocás tu placa en el local y tus clientes acceden desde la cámara de su celular.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="benefits" id="beneficios">
+      <div class="container benefits-grid">
+        <div>
+          <span class="eyebrow"><i></i> Tu comercio, más cerca</span>
+          <h2>Menos vueltas.<br>Más conexiones.</h2>
+          <p class="benefits-copy">Hacé que encontrar tu negocio, escribirte o conocer tus servicios sea mucho más fácil. LocalQR convierte un punto de contacto físico en una puerta de entrada digital.</p>
+          <a class="btn btn-primary" href="https://wa.me/5492646107820?text=Hola%20LocalQR%2C%20quiero%20mejorar%20la%20conexi%C3%B3n%20con%20mis%20clientes" target="_blank" rel="noopener">Quiero conectar mi negocio ↗</a>
+        </div>
+        <div class="benefit-list">
+          <div class="benefit"><div class="benefit-icon">⌁</div><b>Todo a un escaneo</b><span>Un acceso directo para que tus clientes lleguen a lo que buscan.</span></div>
+          <div class="benefit"><div class="benefit-icon">◈</div><b>Tu marca presente</b><span>Una presentación cuidada y pensada para la identidad de tu local.</span></div>
+          <div class="benefit"><div class="benefit-icon">↗</div><b>Más contacto</b><span>Facilitá las consultas, las visitas a tus redes y el acceso a tu información.</span></div>
+          <div class="benefit"><div class="benefit-icon">▣</div><b>Sin instalar apps</b><span>El cliente escanea con la cámara de su celular y listo.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase">
+      <div class="container showcase-box">
+        <div>
+          <span class="eyebrow"><i></i> Una miniweb para tu negocio</span>
+          <h2>Tu comercio tiene mucho para mostrar.</h2>
+          <p>Con Multilink podés reunir redes sociales, WhatsApp, catálogo, horarios, ubicación y otros datos importantes en una página simple, visual y adaptada a tu negocio.</p>
+          <a class="btn btn-outline" href="https://localqrsj.github.io/comercio/" target="_blank" rel="noopener">Ver ejemplo de miniweb ↗</a>
+        </div>
+        <div class="showcase-preview" aria-label="Vista ilustrativa de una miniweb">
+          <div class="preview-card">
+            <div class="screen-logo"></div>
+            <strong>Tu comercio</strong><small>Todo lo que necesitás, en un lugar</small>
+            <div class="preview-link">WhatsApp</div>
+            <div class="preview-link">Instagram</div>
+            <div class="preview-link">Catálogo de productos</div>
+            <div class="preview-link">Cómo llegar</div>
+            <div class="preview-link">Horarios de atención</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="preguntas">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow"><i></i> Preguntas frecuentes</span>
+          <h2>Lo que quizás quieras saber.</h2>
+          <p>Si tenés otra consulta, escribinos y te asesoramos.</p>
+        </div>
+        <div class="faq-list">
+          <details><summary>¿Qué diferencia hay entre la Placa QR y la Placa Multilink?</summary><p>La Placa QR dirige a un único destino que definimos para tu comercio. La Placa Multilink abre una miniweb personalizada que reúne varios enlaces e información del negocio.</p></details>
+          <details><summary>¿Mis clientes necesitan descargar una aplicación?</summary><p>No. Pueden escanear el código directamente con la cámara de su celular y abrir el enlace.</p></details>
+          <details><summary>¿Qué puedo mostrar en la miniweb Multilink?</summary><p>Podés incluir WhatsApp, redes sociales, sitio web, catálogo, ubicación, horarios y otros datos útiles de tu comercio.</p></details>
+          <details><summary>¿La Placa Multilink tiene un costo mensual?</summary><p>Sí. Multilink funciona mediante un servicio mensual. Escribinos para conocer las opciones y recibir una propuesta para tu negocio.</p></details>
+          <details><summary>¿Puedo elegir a dónde dirige mi Placa QR?</summary><p>Sí. Definimos juntos el destino según el objetivo de tu comercio: WhatsApp, Instagram, reseñas, menú, catálogo u otro enlace.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <h2>Tu próximo cliente está a un escaneo de distancia.</h2>
+        <p>Contanos qué tipo de comercio tenés y te ayudamos a elegir la solución LocalQR ideal.</p>
+        <a class="btn" href="https://wa.me/5492646107820?text=Hola%20LocalQR%2C%20quiero%20informaci%C3%B3n%20para%20mi%20comercio" target="_blank" rel="noopener">Hablemos por WhatsApp ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <a href="#inicio"><img class="footer-logo" src="assets/logo-localqr.png" alt="LocalQR"></a>
+      <div class="footer-note">© <span id="year"></span> LocalQR. Tu negocio, más conectado.</div>
+      <div class="footer-links">
+        <a href="https://www.instagram.com/localqrsanjuan/" target="_blank" rel="noopener">Instagram ↗</a>
+        <a href="https://wa.me/5492646107820" target="_blank" rel="noopener">WhatsApp ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Menú móvil y año automático. No requiere librerías externas.
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+    menuToggle.addEventListener("click", () => {
+      const isOpen = navLinks.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", String(isOpen));
+      menuToggle.textContent = isOpen ? "×" : "☰";
+    });
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.textContent = "☰";
+      });
+    });
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
