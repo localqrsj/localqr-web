@@ -80,7 +80,48 @@
     .product-card.featured p { color:#aab2c0; }
     .tag { display:inline-block; padding:7px 11px; border-radius:99px; background:#edf3ff; color:var(--blue); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; }
     .featured .tag { background:rgba(7,85,255,.18); color:#8fb1ff; }
-    .product-art { height:205px; display:flex; align-items:center; justify-content:center; margin:20px 0 23px; border-radius:20px; background:linear-gradient(135deg,#f2f6ff,#e9effa); }
+    /* Fotografías de los productos */
+.product-art {
+    height: 250px;
+    width: 100%;
+    overflow: hidden;
+    margin: 20px 0 23px;
+    border-radius: 20px;
+    background: linear-gradient(135deg,#f2f6ff,#e9effa);
+}
+
+.product-picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.product-photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    padding: 0;
+    border-radius: 20px;
+}
+
+/* Fondo oscuro de la tarjeta Multilink */
+.featured .product-art {
+    background: linear-gradient(135deg,#171d2a,#10141d);
+}
+
+/* Adaptación para celulares */
+@media (max-width: 650px) {
+    .product-art {
+        height: 250px;
+    }
+
+    .product-photo {
+        object-fit: contain;
+        padding: 8px;
+    }
+}
     .featured .product-art { background:linear-gradient(135deg,#171d2a,#10141d); }
     .mini-plate { width:145px; height:172px; padding:10px; background:#fff; border:1px solid #dce2ec; border-radius:15px; box-shadow:0 15px 35px rgba(0,0,0,.16); transform:rotate(5deg); }
     .mini-plate .fake-qr { width:100%; height:105px; margin:5px 0; gap:2px; padding:6px; }
@@ -266,24 +307,22 @@
             <span class="tag">Compra única</span>
             <h3>Placa QR</h3>
             <p>Un código QR que dirige a tus clientes directamente al destino que elijas: WhatsApp, Instagram, reseñas, menú, catálogo o tu sitio web.</p>
-            <div class="product-art">
-              <div class="mini-plate">
-                <b>ESCANEÁ AQUÍ</b>
-                <div class="fake-qr" aria-hidden="true">
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                  <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-                </div>
-                <b>LOCALQR</b>
-              </div>
-            </div>
-            <ul class="feature-list">
+            
+<div class="product-art">
+    <picture class="product-picture">
+        <source
+            media="(min-width: 651px)"
+            srcset="assets/placa-qr-horizontal.jpg"
+        >
+        <img
+            src="assets/placa-qr-real.jpg"
+            alt="Placa QR real de LocalQR"
+            class="product-photo"
+        >
+    </picture>
+</div>
+
+<ul class="feature-list">
               <li>Un solo QR, un destino directo</li>
               <li>Ideal para una acción concreta</li>
               <li>Placa lista para colocar en tu local</li>
@@ -296,13 +335,19 @@
             <span class="tag">Servicio mensual</span>
             <h3>Placa Multilink</h3>
             <p>Un QR que abre una miniweb exclusiva de tu negocio, con todos tus enlaces e información reunidos en una sola página personalizada.</p>
-            <div class="product-art">
-              <div class="phone">
-                <div class="screen-logo"></div>
-                <div class="line"></div><div class="line" style="width:42%"></div>
-                <div class="link"></div><div class="link"></div><div class="link"></div><div class="link"></div><div class="link"></div>
-              </div>
-            </div>
+<div class="product-art">
+    <picture class="product-picture">
+        <source
+            media="(min-width: 651px)"
+            srcset="assets/placa-multilink-horizontal.jpg"
+        >
+        <img
+            src="assets/placa-multilink-real.jpg"
+            alt="Placa Multilink de LocalQR"
+            class="product-photo"
+        >
+    </picture>
+</div>
             <ul class="feature-list">
               <li>Miniweb personalizada con tu identidad</li>
               <li>WhatsApp, redes, catálogo y ubicación</li>
